@@ -1,0 +1,10 @@
+{
+  "name": "neaz-dev-skills",
+  "description": "plan-and-delegate (Claude plans, Cursor/Codex/Gemini implement) and solid-code (SOLID and clean-code rules for writing and reviewing code).",
+  "version": "1.0.0",
+  "author": {
+    "name": "Neaz Mahmood"
+  },
+  "license": "MIT",
+  "keywords": ["skills", "planning", "delegation", "solid", "code-review", "react"]
+}

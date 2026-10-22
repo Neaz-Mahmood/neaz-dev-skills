@@ -1,0 +1,14 @@
+{
+  "name": "neaz-dev-skills",
+  "description": "Planning/delegation and SOLID code-quality skills for Claude Code.",
+  "owner": {
+    "name": "Neaz Mahmood"
+  },
+  "plugins": [
+    {
+      "name": "neaz-dev-skills",
+      "description": "plan-and-delegate and solid-code skills for Claude Code.",
+      "source": "./"
+    }
+  ]
+}

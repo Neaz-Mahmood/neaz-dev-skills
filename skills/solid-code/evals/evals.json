@@ -1,0 +1,53 @@
+{
+  "skill_name": "solid-code",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "can you review evals/files/order_processor.py? i inherited it from someone and want to know whats wrong with it design-wise before i add a 'platinum' customer tier and a PDF report",
+      "expected_output": "A structured review ordered by severity flagging SRP (god class), OCP (customer_type and fmt switches), DIP (hard-coded sqlite/smtp/clock), SQL injection, hard-coded credentials, swallowed exception, magic numbers, -1 sentinel; with concrete fix sketches and an offer to refactor.",
+      "files": [
+        "evals/files/order_processor.py"
+      ],
+      "assertions": [
+        "Flags the class as having too many responsibilities (SRP / god class)",
+        "Flags the customer_type if/elif chain as the reason adding 'platinum' is painful (OCP), with a fix",
+        "Flags the fmt if/elif in report() as the reason adding PDF is painful (OCP), with a fix",
+        "Flags hard-coded sqlite/SMTP/datetime.now dependencies as hurting testability (DIP / injection)",
+        "Flags the SQL injection from string concatenation",
+        "Flags the hard-coded SMTP credentials",
+        "Flags the bare except: pass that swallows DB errors",
+        "Flags magic numbers (0.8, 0.9, 0.5, 1.2) and/or the -1 error sentinel",
+        "Findings are ordered or labeled by severity",
+        "Includes concrete fix code sketch(es)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need a TypeScript notification service for our backend. It should send a message to a user via email, SMS, or Slack depending on their preference, retry up to 3 times on failure, and log each attempt. We'll probably add push notifications and WhatsApp later. Write the code.",
+      "expected_output": "TypeScript code with a channel abstraction, a channel registry so new channels are added without modifying the service, injected dependencies (logger, channels, possibly sleep/clock), retry logic separated from sending, and brief design notes.",
+      "files": [],
+      "assertions": [
+        "Defines a channel abstraction (interface/type) implemented separately per channel",
+        "Adding a new channel (push/WhatsApp) does not require editing the core service's logic (registry/map, not a switch)",
+        "Dependencies (logger, channels) are injected rather than constructed inside the service",
+        "Retry logic is separated from channel-specific sending code",
+        "Retries up to 3 attempts and logs each attempt",
+        "Handles the case of an unknown/unregistered channel preference explicitly",
+        "Includes brief design notes explaining the structure"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "quick python script pls: rename every .jpeg file in a folder (passed as cli arg) to .jpg. just a one-off thing for my photos",
+      "expected_output": "A short, simple script without unnecessary classes, interfaces, or DI; still uses clear names, pathlib, and handles basic errors (missing dir, name collisions).",
+      "files": [],
+      "assertions": [
+        "Script is short (under ~60 lines of code) with no classes/interfaces/DI",
+        "Takes the folder as a CLI argument",
+        "Handles a missing/invalid directory with a clear error",
+        "Avoids overwriting an existing .jpg on name collision",
+        "Uses clear names (no cryptic one-letter variables beyond loop idioms)"
+      ]
+    }
+  ]
+}
