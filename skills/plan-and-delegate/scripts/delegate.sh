@@ -61,10 +61,11 @@ start=$(date +%s)
 set +e
 ( cd "$workdir" && "${cmd[@]}" ) >"$log" 2>&1 &
 pid=$!
-( sleep "$timeout_secs" && kill "$pid" 2>/dev/null && echo "[delegate] TIMEOUT after ${timeout_secs}s" >>"$log" ) &
+# The watchdog must not hold our stdout: a leftover `sleep` keeps the caller's pipe open until the timeout.
+( sleep "$timeout_secs" && kill "$pid" 2>/dev/null && echo "[delegate] TIMEOUT after ${timeout_secs}s" >>"$log" ) >/dev/null 2>&1 &
 watchdog=$!
 wait "$pid"; status=$?
-kill "$watchdog" 2>/dev/null; wait "$watchdog" 2>/dev/null
+pkill -P "$watchdog" 2>/dev/null; kill "$watchdog" 2>/dev/null; wait "$watchdog" 2>/dev/null
 set -e
 
 echo "[delegate] exit=$status in $(( $(date +%s) - start ))s — last 40 lines:"
