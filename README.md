@@ -14,7 +14,7 @@ Two [Agent Skills](https://docs.claude.com/en/docs/claude-code/skills) for Claud
 In Claude Code:
 
 ```
-/plugin marketplace add <github-user>/neaz-dev-skills
+/plugin marketplace add Neaz-Mahmood/neaz-dev-skills
 /plugin install neaz-dev-skills@neaz-dev-skills
 ```
 
@@ -23,7 +23,7 @@ In Claude Code:
 Copy the skill folders into your personal skills directory (or `.claude/skills/` in a project):
 
 ```bash
-git clone https://github.com/<github-user>/neaz-dev-skills.git
+git clone https://github.com/Neaz-Mahmood/neaz-dev-skills.git
 cp -r neaz-dev-skills/skills/* ~/.claude/skills/
 ```
 
