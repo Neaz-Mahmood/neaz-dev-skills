@@ -46,11 +46,12 @@ case "$provider" in
     # File edits are auto-approved; terminal commands stay sandboxed. Claude runs verification.
     cmd=(agy --mode accept-edits --sandbox --output-format text)
     [[ -n "$model" ]] && cmd+=(--model "$model")
-    # Headless agy aborts on any terminal command outside its allowlist, so say what's allowed.
+    # Headless agy aborts on any terminal command outside the user's agy allowlist, which differs per machine,
+    # so the implementer works through file tools only.
     cmd+=(-p "$prompt
 
-## Terminal commands
-Run each command on its own (no &&, pipes or redirects). Only these are allowed, and ANY other command ends your whole run with nothing saved: ls, cat, head, tail, wc, grep, rg, find, git status, git diff, git log, git grep, node -v, pnpm exec tsc --noEmit, pnpm lint, pnpm test, pnpm test:db, pnpm eval, pnpm db:generate, pnpm db:migrate. Do not run pnpm build or pnpm dev (the reviewer builds; an interrupted build corrupts .next). Create directories and files with your file-editing tools, never with mkdir or shell redirection.") ;;
+## No terminal commands
+Do not run any terminal commands; any command outside the local allowlist ends your whole run with nothing saved. Use only your built-in file tools to list, read, search, create and edit files and directories. Don't install dependencies, build, run tests or start servers; the reviewer does that after you finish. Add any new dependency by editing the project's manifest (package.json, pyproject.toml, ...).") ;;
   *) echo "Unknown provider: $provider" >&2; exit 2 ;;
 esac
 

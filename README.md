@@ -43,6 +43,7 @@ You need at least one implementer CLI installed and logged in:
 | `cursor` (default) | `cursor-agent` | https://cursor.com/cli |
 | `codex` | `codex` | `npm i -g @openai/codex` |
 | `gemini` | `gemini` | `npm i -g @google/gemini-cli` |
+| `agy` | `agy` | [Antigravity CLI](https://antigravity.google) (edits files only; Claude installs and verifies) |
 
 The implementer runs with auto-approved edits (`--force`, `--full-auto`, `--yolo`), so use it in a git repo where you can review and revert changes. Plans and task files are written to `<project>/.claude/delegate/<feature>/`. The skill never commits or pushes.
 

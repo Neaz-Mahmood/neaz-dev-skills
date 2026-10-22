@@ -1,7 +1,7 @@
 ---
 name: plan-and-delegate
-description: Claude does the high-level feature planning (requirements, architecture, task breakdown), then hands each implementation task to another AI coding provider (Cursor CLI by default; Codex or Gemini CLI optional) and reviews the result. Use when the user says "plan and delegate", "plan this feature and let cursor/codex/gemini implement it", or asks to split planning (Claude) from implementation (another model/provider).
-argument-hint: "<feature description> [--provider cursor|codex|gemini] [--model <model>] [--no-review]"
+description: Claude does the high-level feature planning (requirements, architecture, task breakdown), then hands each implementation task to another AI coding provider (Cursor CLI by default; Codex, Gemini or Antigravity (agy) CLI optional) and reviews the result. Use when the user says "plan and delegate", "plan this feature and let cursor/codex/gemini/agy implement it", or asks to split planning (Claude) from implementation (another model/provider).
+argument-hint: "<feature description> [--provider cursor|codex|gemini|agy] [--model <model>] [--no-review]"
 ---
 
 # Plan with Claude, implement with another provider
@@ -13,7 +13,7 @@ Claude owns **thinking**: understanding the codebase, designing the feature, cut
 Parse from the user's request (defaults in brackets):
 
 - feature description (required; ask if missing)
-- `--provider` [`cursor`]: `cursor` → `cursor-agent`, `codex` → `codex exec`, `gemini` → `gemini -p`
+- `--provider` [`cursor`]: `cursor` → `cursor-agent`, `codex` → `codex exec`, `gemini` → `gemini -p`, `agy` → `agy -p` (Antigravity; it edits files only and runs no terminal commands, so Claude installs dependencies and runs every check during review)
 - `--model` [provider default]: passed through, e.g. `gpt-5`, `gemini-2.5-pro`. For cursor, `cursor-agent --list-models` shows options.
 - `--no-review`: skip Claude's review/fix loop and just report
 
