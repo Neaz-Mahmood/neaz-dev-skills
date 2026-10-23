@@ -61,7 +61,7 @@ Each run gave headless `claude -p` (Claude Opus 5.5) the same feature spec in a 
 | plan-and-delegate + agy | $1.96 ($1.55–$2.45) | 4.3M | 41 min | 4 of 4 |
 | plan-and-delegate + Cursor | $2.61 ($2.39–$2.84) | 7.7M | 95 min | 2 of 4 |
 
-The grader built each page and loaded it in headless Chromium. It checked the section order, that the 3D scene animates, the pinned scroll-scrubbed showcase, 375px layout, reduced motion, console errors and the README. Every finished run passed every check except one: the scroll-triggered card reveal failed in 2 of the 4 runs of Claude alone and 2 of the 4 agy runs, and we didn't find the cause. The table's Cursor figures cover only the 2 finished runs. The other 2 stopped when Cursor hung on a task until the 20-minute timeout ($1.46 and $1.65 of Claude usage spent by then).
+The grader built each page and loaded it in headless Chromium. It checked the section order, that the 3D scene animates, the pinned scroll-scrubbed showcase, 375px layout, reduced motion, console errors and the README. Every finished run passed every check except one: the scroll-triggered card reveal failed in 2 of the 4 runs of Claude alone and 2 of the 4 agy runs, and we didn't find the cause. The table's Cursor figures cover only the 2 finished runs. The other 2 stopped when Cursor hung on a task until the 20-minute timeout ($1.46 and $1.65 of Claude usage spent by then). Cursor had started a dev server that never exits. `delegate.sh` has since been fixed: implementers are told not to start long-running commands, and a timeout now stops everything the implementer started.
 
 **Small feature** (tags, due dates and CSV/JSON export for a ~100-line Node CLI; 2 runs per setup, graded by 15 hidden acceptance tests):
 
