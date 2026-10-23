@@ -21,7 +21,9 @@ done
 log="${task%.md}.log"
 prompt="You are implementing ONE task in an existing codebase. Follow the task spec exactly, \
 mirror the referenced patterns, stay inside the listed files, do not commit, and do not add \
-dependencies unless told to. When finished, briefly list the files you changed.
+dependencies unless told to. Never start a dev server, watch mode, or any other command that keeps \
+running (npm run dev, vite, next dev, --watch, ...): your run cannot finish while one is open, and the \
+reviewer runs the app. When finished, briefly list the files you changed.
 
 $(cat "$task")"
 
@@ -60,13 +62,20 @@ start=$(date +%s)
 
 # Portable timeout (macOS has no `timeout` by default).
 set +e
-( cd "$workdir" && "${cmd[@]}" ) >"$log" 2>&1 &
+# Job control gives the implementer its own process group, so killing -$pid also stops whatever it
+# started (dev servers, watchers), not just the CLI itself. stdin is /dev/null because a background
+# process group that reads the terminal gets stopped (SIGTTIN); prompts are passed as arguments.
+set -m
+( cd "$workdir" && "${cmd[@]}" ) </dev/null >"$log" 2>&1 &
 pid=$!
+set +m
 # The watchdog must not hold our stdout: a leftover `sleep` keeps the caller's pipe open until the timeout.
-( sleep "$timeout_secs" && kill "$pid" 2>/dev/null && echo "[delegate] TIMEOUT after ${timeout_secs}s" >>"$log" ) >/dev/null 2>&1 &
+( sleep "$timeout_secs" && kill -TERM -- -"$pid" 2>/dev/null && echo "[delegate] TIMEOUT after ${timeout_secs}s" >>"$log" ) >/dev/null 2>&1 &
 watchdog=$!
 wait "$pid"; status=$?
 pkill -P "$watchdog" 2>/dev/null; kill "$watchdog" 2>/dev/null; wait "$watchdog" 2>/dev/null
+# Stop anything the implementer left running after it exited, e.g. a dev server still holding a port.
+kill -TERM -- -"$pid" 2>/dev/null
 set -e
 
 echo "[delegate] exit=$status in $(( $(date +%s) - start ))s — last 40 lines:"
